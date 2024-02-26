@@ -50,9 +50,10 @@ public class HttpClientUtility {
 		List<TVShows> tvShows = new ArrayList<TVShows>();
 		Map<String, String> queryParams = new HashMap<>();
 		try {
+			int i = 0;
 			List<String> urlsQueryParams = new ArrayList<>();
 			for (String url : urls) {
-				queryParams.put("page", String.valueOf(urls.indexOf(url)+1));
+				queryParams.put("page", String.valueOf(++i));
 				urlsQueryParams.add(getParamsString(url,queryParams));
 			}
 			
@@ -81,11 +82,10 @@ public class HttpClientUtility {
 			     .stream()
 			     .map(CompletableFuture::join)
 			     .filter(Objects::nonNull)
+			     .filter(response -> response.headers().firstValue(":status").isPresent())
+			     .filter(response -> "200".equals(response.headers().firstValue(":status").get()))
 			     .collect(Collectors.toList());
-			     
-			     List<HttpHeaders> responseHeaders = tvShowsResponse.stream()
-			    		                                             .map(response->response.headers())
-			    		                                             .collect(Collectors.toList());
+			     			     
 			     tvShows = tvShowsResponse.stream()
                                           .map(response->JsonUtility.jsonToTVShows(response.body()))
                                           .flatMap(List::stream)
@@ -94,7 +94,7 @@ public class HttpClientUtility {
 		} catch(Exception ex) {
 			System.out.println(ex);
 		}
-		timeToComlete(start);
+		timeToComplete(start);
 		return tvShows;
 	}
 	public static List<TVShows> retrieveTVShows(String urlString, String no_page) {
@@ -134,14 +134,11 @@ public class HttpClientUtility {
 	        System.out.println(e);
 	        System.out.println("The GET request failed");
 	    }
-//		Instant finish = Instant.now();
-//		long timeElapsed = Duration.between(start, finish).toMillis();
-//		System.out.println(String.format("Time to make call : %d", timeElapsed));
-		timeToComlete(start);
+		timeToComplete(start);
 		return tvShows;
 	}
 	
-	public static Instant timeToComlete(Instant start) {
+	public static Instant timeToComplete(Instant start) {
 		if (start == null) {
 			return Instant.now();
 		}
