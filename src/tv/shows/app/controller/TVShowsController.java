@@ -45,8 +45,6 @@ public class TVShowsController {
         String result = Result.bestInGenre(genre);
 //        console.printf(result);
 
-        
-
         System.out.println(result);
         bufferedReader.close();
         //bufferedWriter.close();
@@ -87,37 +85,4 @@ class Result {
     	else return String.format("There is no show in %s genre.",genre);
     }
 }
-
-
-/*
- *  https://stackoverflow.com/questions/68711922/java-best-way-to-send-multiple-http-requests
-   
- 
-    List<URI> uris  = ...
- 
-   private static final ExecutorService executorService = Executors.newFixedThreadPool(20);
-
-   private static final HttpClient httpClient = HttpClient.newBuilder()
-        .executor(executorService)
-        .version(HttpClient.Version.HTTP_2)
-        .connectTimeout(Duration.ofSeconds(10))
-        .build();
-        
-    List<HttpRequest> requests = uris.stream()
-        .map(HttpRequest::newBuilder)
-        .map(reqBuilder -> reqBuilder.build())
-        .collect(toList());
-           
-    List<CompleteFuture<HttpResponse<String>> listOfCompletableFutures =  requests.stream()
-                                       .map(request -> httpClient.sendAsync(request, ofString()))
-                                       .toArray(CompletableFuture<?>[]::new))
-        .join();
-        ... CompletableFuture.supplyAsync(() -> callApi(name))
-
-     listOfCompletableFutures.
-    .stream()
-    .map(CompletableFuture::join)
-    .filter(Objects::nonNull)
-    .collect(Collectors.toList());    
-   */     
         

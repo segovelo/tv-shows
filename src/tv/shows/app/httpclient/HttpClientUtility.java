@@ -41,6 +41,10 @@ import tv.shows.app.utility.JsonUtility;
 
 public class HttpClientUtility {
 
+	/*
+	 *  https://stackoverflow.com/questions/68711922/java-best-way-to-send-multiple-http-requests
+     */
+
 	public static List<TVShows> retrieveTVShowsAsync(List<String> urls) {
 		Instant start = Instant.now();
 		List<TVShows> tvShows = new ArrayList<TVShows>();
